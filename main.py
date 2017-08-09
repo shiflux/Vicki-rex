@@ -143,11 +143,16 @@ def start():
     myStream = tweepy.Stream(auth=api.auth, listener=myVickiListener)
 
     logger("Listening to " + str(follow_list))
-    try:
-        myStream.filter(follow=follow_list)
-    except KeyboardInterrupt:
-        logger("Tuning off, interrupted.")
-        myStream.disconnect()
+    while True:
+        try:
+            myStream.filter(follow=follow_list)
+        except KeyboardInterrupt:
+            logger("Tuning off, interrupted.")
+            myStream.disconnect()
+            return
+        except:
+            logger("Unexpected error:" + str(sys.exc_info()[0]))
+            continue
 
 start()
 
