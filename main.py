@@ -5,7 +5,7 @@ from bittrex_api import Bittrex
 import datetime
 import os
 import sys
-
+from http.client import IncompleteRead
 from time import sleep
 
 bt_api = None
@@ -150,6 +150,9 @@ def start():
             logger("Tuning off, interrupted.")
             myStream.disconnect()
             return
+        except IncompleteRead:
+            logger("Incomplete read")
+            pass
         except:
             logger("Unexpected error:" + str(sys.exc_info()[0]))
             continue
